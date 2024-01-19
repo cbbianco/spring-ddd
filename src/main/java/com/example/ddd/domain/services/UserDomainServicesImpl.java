@@ -30,8 +30,10 @@ public class UserDomainServicesImpl implements UserDomainServices {
      */
     @Override
     public UserEntity handlerPersist(UserDto userDto) {
-        var finer = userRepository.findById(BigInteger.ONE);
+        var finer = userRepository.findByName(userDto.getName());
+        log.info("UserDomainServicesImpl@handlerPersist");
         if(finer.isEmpty()) {
+            log.info("El usuario no fue encontrado, se procedé ha persistirlo");
             return userRepository.save(UserEntity.builder()
                             .name(userDto.getName())
                             .lastName(userDto.getLastName())
@@ -39,6 +41,7 @@ public class UserDomainServicesImpl implements UserDomainServices {
                     .build());
         }
 
+        log.info("El usuario ya se encuentra registrado en el sistema, Usuario:  {}", userDto);
         throw new RuntimeException("El usuario ya se encuentra registrado en el sistema");
     }
 }

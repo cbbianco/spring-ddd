@@ -1,10 +1,13 @@
 package com.example.ddd.presentation;
 
+import com.example.ddd.application.model.Response;
 import com.example.ddd.application.user.UserServices;
 import com.example.ddd.application.model.UserDto;
+import com.example.ddd.infrastructure.entity.UserEntity;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.catalina.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -34,9 +37,13 @@ public class UserController {
      *
      * @return {@link }
      */
-    @PostMapping(value = "/usuarios/guardar", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> saveUser(@RequestBody @Valid UserDto userDto) {
+    @PostMapping(value = "/guardar", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Response<UserEntity>> saveUser(@RequestBody @Valid UserDto userDto) {
         log.info("UserController@saveUser");
-        return new ResponseEntity<>(this.userServices.handlerPersist(userDto), HttpStatus.CREATED);
+
+        var user = this.userServices.handlerPersist(userDto);
+        return new ResponseEntity<>(Response.<UserEntity>builder()
+                .body(user)
+                .build(),HttpStatus.CREATED);
     }
 }

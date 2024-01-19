@@ -1,6 +1,7 @@
 package com.example.ddd.application.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 /**
@@ -9,6 +10,7 @@ import lombok.*;
 @Getter
 @Setter
 @Builder
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDto {
@@ -17,6 +19,7 @@ public class UserDto {
      * @apiNote name de tipo {@link String}
      */
     @JsonProperty("nombre")
+    @NotNull(message = "El campo no puede permanecer vació")
     private String name;
 
 
@@ -24,11 +27,13 @@ public class UserDto {
      * @apiNote lastName de tipo {@link String}
      */
     @JsonProperty("apellido")
+    @NotNull(message = "El campo no puede permanecer vació")
     private String lastName;
 
     /**
      * @apiNote old de tipo {@link String}
      */
     @JsonProperty("edad")
+    @NotNull(message = "El campo no puede permanecer vació")
     private String old;
 }
